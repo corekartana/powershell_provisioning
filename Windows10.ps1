@@ -1,4 +1,4 @@
-# Script til at kører ved hver reinstall af Windows 10 Pro. Sidst opdateret 2/1-2017
+# Script til at kÃ¸rer ved hver reinstall af Windows 10 Pro. Sidst opdateret 2/1-2017
 #--- List all installed programs --#
 # Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate |Format-Table -AutoSize
 
@@ -10,6 +10,9 @@ Get-AppxPackage Microsoft.BingFinance | Remove-AppxPackage
 Get-AppxPackage Microsoft.BingNews | Remove-AppxPackage
 Get-AppxPackage Microsoft.BingSports | Remove-AppxPackage
 Get-AppxPackage Microsoft.BingWeather | Remove-AppxPackage
+Get-AppxPackage Microsoft.BingTravel | Remove-AppxPackage
+Get-AppxPackage Microsoft.BingHealthAndFitness | Remove-AppxPackage
+Get-AppxPackage Microsoft.BingFoodAndDrink | Remove-AppxPackage
 
 # Alarms
 Get-AppxPackage Microsoft.WindowsAlarms | Remove-AppxPackage
@@ -53,6 +56,15 @@ Get-AppxPackage Microsoft.Office.OneNote | Remove-AppxPackage
 # People
 Get-AppxPackage Microsoft.People | Remove-AppxPackage
 
+# BubbleWitch
+Get-AppxPackage *BubbleWitch* | Remove-AppxPackage
+
+# Candy Crush
+Get-AppxPackage king.com.CandyCrush* | Remove-AppxPackage
+
+# Comms Phone
+Get-AppxPackage Microsoft.CommsPhone | Remove-AppxPackage
+
 # Start Menu: Disable Bing Search Results
 Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search -Name BingSearchEnabled -Type DWord -Value 0
 # To Restore (Enabled):
@@ -90,16 +102,14 @@ Get-AppxPackage Windows.MiracastView | Remove-AppxPackage
 # MarchOfEmpire
 Get-AppxPackage *MarchOfEmpires* | Remove-AppxPackage
 
-# BubbleWitch3Saga
-Get-AppxPackage king.com.BubbleWitch3Saga | Remove-AppxPackage
-
-# CandyCrushSodaSaga
-Get-AppxPackage king.com.CandyCrushSodaSaga | Remove-AppxPackage
-
 # Plex
 Get-AppxPackage *Plex* | Remove-AppxPackage
 
+# Disney Magic Kingdom
+Get-AppxPackage *DisneyMagicKingdom* | Remove-AppxPackage
 
+# Hidden City: Hidden Object Adventure
+Get-AppxPackage *HiddenCityMysteryofShadows* | Remove-AppxPackage
 
 # Disable Xbox Gamebar
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR" -Name AppCaptureEnabled -Type DWord -Value 0
@@ -110,3 +120,21 @@ If (-Not (Test-Path "HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Adv
     New-Item -Path HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People | Out-Null
 }
 Set-ItemProperty -Path "HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name PeopleBand -Type DWord -Value 0
+
+#--- Windows Settings ---
+# Some from: @NickCraver's gist https://gist.github.com/NickCraver/7ebf9efbfd0c3eab72e9
+
+# Privacy: Let apps use my advertising ID: Disable
+If (-Not (Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo")) {
+    New-Item -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo | Out-Null
+}
+Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo -Name Enabled -Type DWord -Value 0
+
+# WiFi Sense: HotSpot Sharing: Disable
+If (-Not (Test-Path "HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting")) {
+    New-Item -Path HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting | Out-Null
+}
+Set-ItemProperty -Path HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting -Name value -Type DWord -Value 0
+
+# WiFi Sense: Shared HotSpot Auto-Connect: Disable
+Set-ItemProperty -Path HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowAutoConnectToWiFiSenseHotspots -Name value -Type DWord -Value 0
