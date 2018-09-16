@@ -1,4 +1,4 @@
-# Script til at kører ved hver reinstall af Windows 10 Pro. Sidst opdateret 2/1-2017
+# Script til at kører ved hver reinstall af Windows 10 Pro. Sidst opdateret 16/9-2018
 #--- List all installed programs --#
 # Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate |Format-Table -AutoSize
 
